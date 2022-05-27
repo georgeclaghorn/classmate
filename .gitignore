@@ -1,0 +1,6 @@
+/Gemfile.lock
+
+# Build artifacts
+/*.gem
+/target
+/lib/classmate.bundle

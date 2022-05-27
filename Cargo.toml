@@ -1,0 +1,13 @@
+[package]
+name = "classmate"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+magnus = "0.3"
+parcel_css = "1.0.0-alpha.25"
+owning_ref = "0.4"
+tap = "1.0"

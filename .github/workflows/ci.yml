@@ -1,0 +1,35 @@
+
+name: CI
+on: push
+
+jobs:
+  specs:
+    name: Specs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+          bundler-cache: true
+
+      - name: Compile native extension
+        run: bundle exec rake compile
+
+      - name: Run specs
+        run: bundle exec rspec --format documentation
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Run Clippy
+        run: cargo clippy --no-deps
