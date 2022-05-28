@@ -15,6 +15,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1
+          rubygems: latest
           bundler-cache: true
 
       - name: Compile native extension
