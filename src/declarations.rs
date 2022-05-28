@@ -3,7 +3,7 @@ use std::{
     rc::Rc
 };
 use magnus::{
-    define_module,
+    define_module, current_receiver,
     Value, RModule, RClass, Module, Object, Error,
     TypedData, DataType, DataTypeFunctions,
     class::object,
@@ -52,8 +52,10 @@ impl<'a> DeclarationList<'a> {
         )
     }
 
-    fn proxy(&'a self) -> Result<(), Error> {
-        ProxyVisitor::new(|resource| yield_value(resource.to_string())).visit_from(&mut self.provider.borrow_mut())
+    fn proxy(&'a self) -> Result<Value, Error> {
+        ProxyVisitor::new(|resource| yield_value(resource.to_string()))
+            .visit_from(&mut self.provider.borrow_mut())
+            .and_then(|_| current_receiver())
     }
 
     fn to_css(&'a self) -> Result<String, Error> {

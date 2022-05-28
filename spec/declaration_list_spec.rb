@@ -33,6 +33,10 @@ describe Classmate::DeclarationList do
       expect { declarations.proxy { nil } }.not_to change { declarations.to_s }
     end
 
+    it "returns self" do
+      expect(declarations.proxy { |url| "https://proxy.example.com/#{url}" }).to eq(declarations)
+    end
+
     it "raises when the block returns a non-String" do
       expect { declarations.proxy { 1234 } }
         .to raise_error(TypeError, "no implicit conversion of Integer into String")

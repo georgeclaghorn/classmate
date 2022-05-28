@@ -65,6 +65,10 @@ describe Classmate::Stylesheet do
       expect { stylesheet.proxy { nil } }.not_to change { stylesheet.to_s }
     end
 
+    it "returns self" do
+      expect(stylesheet.proxy { |url| "https://proxy.example.com/#{url}" }).to eq(stylesheet)
+    end
+
     it "raises when the block returns a non-String" do
       expect { stylesheet.proxy { 1234 } }
         .to raise_error(TypeError, "no implicit conversion of Integer into String")
