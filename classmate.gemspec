@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.license  = "MIT"
 
   s.required_ruby_version = ">= 3.1"
-  s.required_rubygems_version = "> 3.3"
+  s.required_rubygems_version = ">= 3.3.10"
 
   s.files = Dir["Cargo.toml", "Cargo.lock", "src/**/*", "lib/**/*"]
   s.extensions = ["Cargo.toml"]
