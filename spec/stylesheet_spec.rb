@@ -19,6 +19,31 @@ describe Classmate::Stylesheet do
     end
   end
 
+  define "#minify" do
+    let :stylesheet do
+      Classmate::Stylesheet.parse(<<~CSS)
+        .foo {
+          padding-top: 5px;
+          padding-left: 5px;
+          padding-right: 5px;
+          padding-bottom: 5px;
+        }
+
+        .bar {
+          padding: 5px;
+        }
+      CSS
+    end
+
+    it "minifies the stylesheet" do
+      expect { stylesheet.minify }.to change { stylesheet.to_s }.to(<<~CSS)
+        .foo, .bar {
+          padding: 5px;
+        }
+      CSS
+    end
+  end
+
   describe "#proxy" do
     let :stylesheet do
       Classmate::Stylesheet.parse(<<~CSS)
