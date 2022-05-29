@@ -9,7 +9,7 @@ use magnus::{
     class::object,
     block::yield_value
 };
-use parcel_css::stylesheet::PrinterOptions;
+use parcel_css::stylesheet::{MinifyOptions, PrinterOptions};
 use owning_ref::OwningHandle;
 use tap::Tap;
 use crate::visitors::ProxyVisitor;
@@ -43,6 +43,12 @@ impl<'a> StyleAttribute<'a> {
                 "not implemented"
             )
         )
+    }
+
+    fn minify(&'a self) -> Result<Value, Error> {
+        self.provider.borrow_mut().minify(MinifyOptions::default());
+
+        current_receiver()
     }
 
     fn proxy(&'a self) -> Result<Value, Error> {
@@ -137,6 +143,8 @@ pub fn initialize() -> Result<(), Error> {
 
   class.define_singleton_method("parse", function!(StyleAttribute::parse, 1))?;
   class.define_singleton_method("new", function!(StyleAttribute::new, 0))?;
+
+  class.define_method("minify", method!(StyleAttribute::minify, 0))?;
 
   class.define_method("proxy", method!(StyleAttribute::proxy, 0))?;
 

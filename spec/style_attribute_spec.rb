@@ -19,6 +19,21 @@ describe Classmate::StyleAttribute do
     end
   end
 
+  define "#minify" do
+    let :attribute do
+      Classmate::StyleAttribute.parse(<<~STRING)
+        padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+      STRING
+    end
+
+    it "minifies the style attribute" do
+      expect { attribute.minify }.to change { stylesheet.to_s }.to("padding: 5px;")
+    end
+  end
+
   describe "#proxy" do
     let(:attribute) {
       Classmate::StyleAttribute.parse('background-image: url("https://example.com/foo.png")') }
