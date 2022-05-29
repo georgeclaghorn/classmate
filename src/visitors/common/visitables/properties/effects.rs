@@ -6,7 +6,7 @@ impl<'a> Visitable<'a> for FilterList<'a> {
     fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
-                FilterList::Filters(filters) => filters.as_mut_slice().accept(visitor),
+                FilterList::Filters(filters) => filters.accept(visitor),
                 FilterList::None => Ok(())
             }
         })

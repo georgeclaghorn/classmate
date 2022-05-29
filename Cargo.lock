@@ -120,6 +120,7 @@ dependencies = [
  "magnus",
  "owning_ref",
  "parcel_css",
+ "smallvec",
  "tap",
 ]
 

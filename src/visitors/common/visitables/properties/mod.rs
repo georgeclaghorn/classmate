@@ -14,8 +14,8 @@ impl<'a> Visitable<'a> for Property<'a> {
     fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
-                Property::BackgroundImage(images)             => images.as_mut_slice().accept(visitor),
-                Property::Background(backgrounds)             => backgrounds.as_mut_slice().accept(visitor),
+                Property::BackgroundImage(images)             => images.accept(visitor),
+                Property::Background(backgrounds)             => backgrounds.accept(visitor),
                 Property::BorderImageSource(source)           => source.accept(visitor),
                 Property::BorderImage(image, _)               => image.accept(visitor),
                 Property::ListStyleImage(image)               => image.accept(visitor),
@@ -27,8 +27,8 @@ impl<'a> Visitable<'a> for Property<'a> {
                 Property::MarkerEnd(marker)                   => marker.accept(visitor),
                 Property::Marker(marker)                      => marker.accept(visitor),
                 Property::ClipPath(path, _)                   => path.accept(visitor),
-                Property::MaskImage(images, _)                => images.as_mut_slice().accept(visitor),
-                Property::Mask(masks, _)                      => masks.as_mut_slice().accept(visitor),
+                Property::MaskImage(images, _)                => images.accept(visitor),
+                Property::Mask(masks, _)                      => masks.accept(visitor),
                 Property::MaskBorderSource(source)            => source.accept(visitor),
                 Property::MaskBorder(border)                  => border.accept(visitor),
                 Property::WebKitMaskBoxImage(image, _)        => image.accept(visitor),
