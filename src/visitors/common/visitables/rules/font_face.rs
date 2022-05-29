@@ -7,14 +7,14 @@ use parcel_css::rules::font_face::{
   UrlSource
 };
 
-impl<'a> Visitable<'a> for FontFaceRule<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for FontFaceRule<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| self.properties.accept(visitor))
     }
 }
 
-impl<'a> Visitable<'a> for FontFaceProperty<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for FontFaceProperty<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 FontFaceProperty::Source(property) => property.accept(visitor),
@@ -30,8 +30,8 @@ impl<'a> Visitable<'a> for FontFaceProperty<'a> {
     }
 }
 
-impl<'a> Visitable<'a> for Source<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for Source<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 Source::Url(source) => source.accept(visitor),
@@ -41,8 +41,8 @@ impl<'a> Visitable<'a> for Source<'a> {
     }
 }
 
-impl<'a> Visitable<'a> for UrlSource<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for UrlSource<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| self.url.accept(visitor))
     }
 }

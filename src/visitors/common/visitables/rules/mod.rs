@@ -16,16 +16,16 @@ use crate::visitors::common::prelude::*;
 
 use parcel_css::rules::CssRuleList as RuleList;
 
-impl<'a> Visitable<'a> for RuleList<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for RuleList<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| self.0.accept(visitor))
     }
 }
 
 use parcel_css::rules::CssRule as Rule;
 
-impl<'a> Visitable<'a> for Rule<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for Rule<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 Rule::Media(rule)             => rule.accept(visitor),

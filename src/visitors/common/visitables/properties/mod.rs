@@ -10,8 +10,8 @@ use crate::visitors::common::prelude::*;
 
 use parcel_css::properties::Property;
 
-impl<'a> Visitable<'a> for Property<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for Property<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 Property::BackgroundImage(images)             => images.accept(visitor),

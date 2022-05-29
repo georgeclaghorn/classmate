@@ -2,8 +2,8 @@ use crate::visitors::common::prelude::*;
 
 use parcel_css::properties::effects::{FilterList, Filter};
 
-impl<'a> Visitable<'a> for FilterList<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for FilterList<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 FilterList::Filters(filters) => filters.accept(visitor),
@@ -13,8 +13,8 @@ impl<'a> Visitable<'a> for FilterList<'a> {
     }
 }
 
-impl<'a> Visitable<'a> for Filter<'a> {
-    fn accept<V: Visitor<'a, E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+impl Visitable for Filter<'_> {
+    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 Filter::Url(url)      => url.accept(visitor),
