@@ -4,12 +4,12 @@ use magnus::Error;
 
 mod errors;
 mod stylesheet;
-mod declarations;
+mod style_attribute;
 
 mod visitors;
 
 #[magnus::init]
 fn initialize() -> Result<(), Error> {
     stylesheet::initialize()?;
-    declarations::initialize()
+    style_attribute::initialize()
 }

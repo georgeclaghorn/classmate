@@ -52,6 +52,8 @@ visit! {
     impl<'a, T, E> Visit<'a, T, E> for ProxyVisitor<E> where T in [
         std::cell::RefMut<'a, parcel_css::stylesheet::StyleSheet<'a>>,
         parcel_css::stylesheet::StyleSheet<'a>,
+        std::cell::RefMut<'a, parcel_css::stylesheet::StyleAttribute<'a>>,
+        parcel_css::stylesheet::StyleAttribute<'a>,
 
         parcel_css::rules::CssRuleList<'a>,
         parcel_css::rules::CssRule<'a>,

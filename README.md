@@ -28,27 +28,27 @@ stylesheet = Classmate::Stylesheet.parse(<<~CSS)
 CSS
 ```
 
-Parse a declaration list (for example, from an HTML element’s `style` attribute):
+Parse a style attribute (from an HTML or SVG element, for example):
 
 ```ruby
-declarations = Classmate::DeclarationList.parse('background-image: url("https://example.com/background.png");')
+attribute = Classmate::StyleAttribute.parse('background-image: url("https://example.com/background.png");')
 ```
 
-Rewrite each URL in a stylesheet or declaration list to point to a proxy server:
+Rewrite each URL in a stylesheet or style attribute to point to a proxy server:
 
 ```ruby
 stylesheet.proxy { |url| "https://proxy.example.com/#{url}" }
-declarations.proxy { |url| "https://proxy.example.com/#{url}" }
+attribute.proxy { |url| "https://proxy.example.com/#{url}" }
 ```
 
-Convert a stylesheet or declaration list to CSS:
+Convert a stylesheet or style attribute to CSS:
 
 ```ruby
 stylesheet.to_css
 stylesheet.to_s
 
-declarations.to_css
-declarations.to_s
+attribute.to_css
+attribute.to_s
 ```
 
 ## Requirements

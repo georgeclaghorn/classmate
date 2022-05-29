@@ -6,6 +6,8 @@ pub use proxy::ProxyVisitor;
 pub trait Visitor<'a, E>:
     Visit<'a, std::cell::RefMut<'a, parcel_css::stylesheet::StyleSheet<'a>>, E> +
     Visit<'a, parcel_css::stylesheet::StyleSheet<'a>, E> +
+    Visit<'a, std::cell::RefMut<'a, parcel_css::stylesheet::StyleAttribute<'a>>, E> +
+    Visit<'a, parcel_css::stylesheet::StyleAttribute<'a>, E> +
     Visit<'a, parcel_css::rules::CssRuleList<'a>, E> +
     Visit<'a, parcel_css::rules::CssRule<'a>, E> +
     Visit<'a, parcel_css::rules::media::MediaRule<'a>, E> +
