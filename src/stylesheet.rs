@@ -58,7 +58,7 @@ impl<'a> Stylesheet<'a> {
             .borrow_mut()
             .minify(MinifyOptions::default())
             .map_err(|error| Error::new(
-                crate::errors::print_error(),
+                crate::errors::minify_error(),
                 error.to_string()
             ))
             .and_then(|_| current_receiver())

@@ -4,6 +4,10 @@ pub fn parse_error() -> ExceptionClass {
     get("ParseError")
 }
 
+pub fn minify_error() -> ExceptionClass {
+    get("MinifyError")
+}
+
 pub fn print_error() -> ExceptionClass {
     get("PrintError")
 }
