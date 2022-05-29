@@ -1,7 +1,4 @@
-use std::{
-    cell::{RefCell, Ref, RefMut},
-    rc::Rc
-};
+use std::cell::{RefCell, Ref, RefMut};
 use magnus::{
     define_module, current_receiver,
     Value, RModule, RClass, Module, Object, Error,
@@ -15,7 +12,7 @@ use tap::Tap;
 use crate::visitors::ProxyVisitor;
 
 struct StyleAttribute<'a> {
-    provider: Rc<dyn StyleAttributeProvider<'a> + 'a>
+    provider: Box<dyn StyleAttributeProvider<'a>>
 }
 
 impl<'a> StyleAttribute<'a> {
@@ -28,7 +25,7 @@ impl<'a> StyleAttribute<'a> {
 
         maybe_provider
             .map(|provider| Value::from(
-                StyleAttribute { provider: Rc::new(provider) }
+                StyleAttribute { provider: Box::new(provider) }
             ))
             .map_err(|error| Error::new(
                 crate::errors::parse_error(),
@@ -101,7 +98,7 @@ pub trait StyleAttributeProvider<'a> {
 
 type ParsedStyleAttributeHandle<'a> = OwningHandle<
     String,
-    Rc<RefCell<parcel_css::stylesheet::StyleAttribute<'a>>>
+    Box<RefCell<parcel_css::stylesheet::StyleAttribute<'a>>>
 >;
 
 struct ParsedStyleAttributeProvider<'a> {
@@ -120,7 +117,7 @@ impl<'a> ParsedStyleAttributeProvider<'a> {
 
                     |code_ptr| parser(
                         unsafe { &*code_ptr }
-                    ).map(|stylesheet| Rc::new(RefCell::new(stylesheet)))
+                    ).map(|stylesheet| Box::new(RefCell::new(stylesheet)))
                 )?
             }
         )
