@@ -53,9 +53,7 @@ pub trait Visitable {
 }
 
 pub trait Visit<V: Visitable + ?Sized, E> {
-    fn visit(&self, _visitable: &mut V) -> Result<(), E> {
-        Ok(())
-    }
+    fn visit(&self, visitable: &mut V) -> Result<(), E>;
 }
 
 macro_rules! visit {
