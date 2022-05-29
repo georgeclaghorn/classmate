@@ -34,6 +34,14 @@ Parse a style attribute (from an HTML or SVG element, for example):
 attribute = Classmate::StyleAttribute.parse('background-image: url("https://example.com/background.png");')
 ```
 
+Minify a stylesheet or style attribute. Combine longhand properties into shorthands, merge similar
+style rules, omit default values, remove unnecessary quotes, and more:
+
+```ruby
+stylesheet.minify
+attribute.minify
+```
+
 Rewrite each URL in a stylesheet or style attribute to point to a proxy server:
 
 ```ruby
