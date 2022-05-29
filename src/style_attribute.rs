@@ -128,26 +128,26 @@ impl<'a> ParsedStyleAttributeProvider<'a> {
 }
 
 impl<'a> StyleAttributeProvider<'a> for ParsedStyleAttributeProvider<'a> {
-  fn borrow(&self) -> Ref<'a, parcel_css::stylesheet::StyleAttribute> {
-      self.handle.borrow()
-  }
+    fn borrow(&self) -> Ref<'a, parcel_css::stylesheet::StyleAttribute> {
+        self.handle.borrow()
+    }
 
-  fn borrow_mut(&self) -> RefMut<'a, parcel_css::stylesheet::StyleAttribute> {
-      self.handle.borrow_mut()
-  }
+    fn borrow_mut(&self) -> RefMut<'a, parcel_css::stylesheet::StyleAttribute> {
+        self.handle.borrow_mut()
+    }
 }
 
 pub fn initialize() -> Result<(), Error> {
-  let module = define_module("Classmate")?;
-  let class = module.define_class("StyleAttribute", object())?;
+    let module = define_module("Classmate")?;
+    let class = module.define_class("StyleAttribute", object())?;
 
-  class.define_singleton_method("parse", function!(StyleAttribute::parse, 1))?;
-  class.define_singleton_method("new", function!(StyleAttribute::new, 0))?;
+    class.define_singleton_method("parse", function!(StyleAttribute::parse, 1))?;
+    class.define_singleton_method("new", function!(StyleAttribute::new, 0))?;
 
-  class.define_method("minify", method!(StyleAttribute::minify, 0))?;
+    class.define_method("minify", method!(StyleAttribute::minify, 0))?;
 
-  class.define_method("proxy", method!(StyleAttribute::proxy, 0))?;
+    class.define_method("proxy", method!(StyleAttribute::proxy, 0))?;
 
-  class.define_method("to_css", method!(StyleAttribute::to_css, 0))?;
-  class.define_alias("to_s", "to_css")
+    class.define_method("to_css", method!(StyleAttribute::to_css, 0))?;
+    class.define_alias("to_s", "to_css")
 }
