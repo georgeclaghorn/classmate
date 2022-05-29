@@ -11,7 +11,7 @@ use crate::visitors::common::prelude::*;
 use parcel_css::properties::Property;
 
 impl Visitable for Property<'_> {
-    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 Property::BackgroundImage(images)             => images.accept(visitor),

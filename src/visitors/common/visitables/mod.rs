@@ -7,13 +7,13 @@ mod values;
 use crate::visitors::{Visitor, Visitable};
 
 impl<'a, T> Visitable for [T] where T: Visitable {
-    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         self.iter_mut().try_for_each(|item| item.accept(visitor))
     }
 }
 
 impl<'a, T> Visitable for Vec<T> where T: Visitable {
-    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         self.as_mut_slice().accept(visitor)
     }
 }
@@ -25,7 +25,7 @@ where
     T: Visitable,
     [T; N]: Array<Item=T>
 {
-    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         self.as_mut_slice().accept(visitor)
     }
 }
@@ -33,7 +33,7 @@ where
 use std::cell::RefMut;
 
 impl<'a, T> Visitable for RefMut<'a, T> where T: Visitable {
-    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         T::accept(self, visitor)
     }
 }

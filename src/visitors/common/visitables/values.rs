@@ -3,7 +3,7 @@ use crate::visitors::common::prelude::*;
 use parcel_css::values::image::{Image, ImageSet, ImageSetOption};
 
 impl Visitable for Image<'_> {
-    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
                 Image::Url(resource) => resource.accept(visitor),
@@ -16,13 +16,13 @@ impl Visitable for Image<'_> {
 }
 
 impl Visitable for ImageSet<'_> {
-  fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+  fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         visitor.visit(self).and_then(|_| self.options.accept(visitor))
   }
 }
 
 impl Visitable for ImageSetOption<'_> {
-  fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+  fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         visitor.visit(self).and_then(|_| self.image.accept(visitor))
   }
 }
@@ -30,7 +30,7 @@ impl Visitable for ImageSetOption<'_> {
 use parcel_css::values::url::Url;
 
 impl Visitable for Url<'_> {
-    fn accept<V: Visitor<E>, E>(&mut self, visitor: &V) -> Result<(), E> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         visitor.visit(self)
     }
 }
