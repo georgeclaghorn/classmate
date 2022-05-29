@@ -9,7 +9,7 @@ impl<E> ProxyVisitor<E> {
         ProxyVisitor { callback: Box::new(callback) }
     }
 
-    pub fn visit_from<V: Visitable + ?Sized>(&self, visitable: &mut V) -> Result<(), E> {
+    pub fn visit_from(&self, visitable: &mut impl Visitable) -> Result<(), E> {
         visitable.accept(self)
     }
 
