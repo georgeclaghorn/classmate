@@ -50,9 +50,7 @@ impl<'a, E> Visit<'a, ImportRule<'a>, E> for ProxyVisitor<E> {
 
 visit! {
     impl<'a, T, E> Visit<'a, T, E> for ProxyVisitor<E> where T in [
-        std::cell::RefMut<'a, parcel_css::stylesheet::StyleSheet<'a>>,
         parcel_css::stylesheet::StyleSheet<'a>,
-        std::cell::RefMut<'a, parcel_css::stylesheet::StyleAttribute<'a>>,
         parcel_css::stylesheet::StyleAttribute<'a>,
 
         parcel_css::rules::CssRuleList<'a>,
@@ -75,7 +73,6 @@ visit! {
         parcel_css::rules::font_palette_values::FontPaletteValuesRule<'a>,
         parcel_css::rules::font_palette_values::FontPaletteValuesProperty<'a>,
 
-        std::cell::RefMut<'a, parcel_css::declaration::DeclarationBlock<'a>>,
         parcel_css::declaration::DeclarationBlock<'a>,
 
         parcel_css::properties::Property<'a>,

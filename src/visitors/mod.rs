@@ -4,9 +4,7 @@ mod proxy;
 pub use proxy::ProxyVisitor;
 
 pub trait Visitor<'a, E>:
-    Visit<'a, std::cell::RefMut<'a, parcel_css::stylesheet::StyleSheet<'a>>, E> +
     Visit<'a, parcel_css::stylesheet::StyleSheet<'a>, E> +
-    Visit<'a, std::cell::RefMut<'a, parcel_css::stylesheet::StyleAttribute<'a>>, E> +
     Visit<'a, parcel_css::stylesheet::StyleAttribute<'a>, E> +
     Visit<'a, parcel_css::rules::CssRuleList<'a>, E> +
     Visit<'a, parcel_css::rules::CssRule<'a>, E> +
@@ -28,7 +26,6 @@ pub trait Visitor<'a, E>:
     Visit<'a, parcel_css::rules::font_face::UrlSource<'a>, E> +
     Visit<'a, parcel_css::rules::font_palette_values::FontPaletteValuesRule<'a>, E> +
     Visit<'a, parcel_css::rules::font_palette_values::FontPaletteValuesProperty<'a>, E> +
-    Visit<'a, std::cell::RefMut<'a, parcel_css::declaration::DeclarationBlock<'a>>, E> +
     Visit<'a, parcel_css::declaration::DeclarationBlock<'a>, E> +
     Visit<'a, parcel_css::properties::Property<'a>, E> +
     Visit<'a, parcel_css::properties::background::Background<'a>, E> +
