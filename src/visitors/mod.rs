@@ -53,7 +53,7 @@ pub trait Visitable {
     fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E>;
 }
 
-pub trait Visit<V: Visitable + ?Sized, E> {
+pub trait Visit<V: Visitable, E> {
     fn visit(&self, visitable: &mut V) -> Result<(), E>;
 }
 
