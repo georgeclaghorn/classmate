@@ -21,17 +21,18 @@ impl<'a> ParsedStyleAttributeProvider<'a> {
         code: String,
         parser: impl FnOnce(&'a str) -> Result<StyleAttribute<'a>, E>
     ) -> Result<ParsedStyleAttributeProvider<'a>, E> {
-        Ok(
-            ParsedStyleAttributeProvider {
-                handle: OwningHandle::try_new(
-                    code,
+        Self::try_new_handle(code, parser).map(|handle| Self { handle })
+    }
 
-                    |code_ptr| parser(
-                        unsafe { &*code_ptr }
-                    ).map(|attribute| Box::new(RefCell::new(attribute)))
-                )?
-            }
-        )
+    fn try_new_handle<E>(
+        code: String,
+        parser: impl FnOnce(&'a str) -> Result<StyleAttribute<'a>, E>
+    ) -> Result<ParsedStyleAttributeHandle<'a>, E> {
+        OwningHandle::try_new(code, |code_ptr| {
+            parser(unsafe { &*code_ptr })
+                .map(RefCell::new)
+                .map(Box::new)
+        })
     }
 }
 

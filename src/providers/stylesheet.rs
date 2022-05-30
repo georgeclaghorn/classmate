@@ -25,22 +25,21 @@ impl<'a, 'o> ParsedStylesheetProvider<'a, 'o> {
         code: String,
         parser: impl FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E>
     ) -> Result<ParsedStylesheetProvider<'a, 'o>, E> {
-        Ok(
-            ParsedStylesheetProvider {
-                handle: OwningHandle::try_new(
-                    filename,
+        Self::try_new_handle(filename, code, parser).map(|handle| Self { handle })
+    }
 
-                    |filename_ptr| OwningHandle::try_new(
-                        code,
-
-                        |code_ptr| parser(
-                            unsafe { &*filename_ptr },
-                            unsafe { &*code_ptr }
-                        ).map(|stylesheet| Box::new(RefCell::new(stylesheet)))
-                    )
-                )?
-            }
-        )
+    fn try_new_handle<E>(
+        filename: String,
+        code: String,
+        parser: impl FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E>
+    ) -> Result<ParsedStylesheetHandle<'a, 'o>, E> {
+        OwningHandle::try_new(filename, |filename_ptr| {
+            OwningHandle::try_new(code, |code_ptr| {
+                parser(unsafe { &*filename_ptr }, unsafe { &*code_ptr })
+                    .map(RefCell::new)
+                    .map(Box::new)
+            })
+        })
     }
 }
 
