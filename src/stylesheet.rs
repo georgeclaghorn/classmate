@@ -122,8 +122,11 @@ struct ParsedStylesheetProvider<'a, 'o> {
 }
 
 impl<'a, 'o> ParsedStylesheetProvider<'a, 'o> {
-    fn try_new<P, E>(filename: String, code: String, parser: P) -> Result<ParsedStylesheetProvider<'a, 'o>, E>
-    where P: FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E> {
+    fn try_new<E>(
+        filename: String,
+        code: String,
+        parser: impl FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E>
+    ) -> Result<ParsedStylesheetProvider<'a, 'o>, E> {
         Ok(
             ParsedStylesheetProvider {
                 handle: OwningHandle::try_new(

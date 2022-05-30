@@ -106,10 +106,10 @@ struct ParsedStyleAttributeProvider<'a> {
 }
 
 impl<'a> ParsedStyleAttributeProvider<'a> {
-    fn try_new<P, E>(code: String, parser: P) -> Result<ParsedStyleAttributeProvider<'a>, E>
-    where
-        P: FnOnce(&'a str) -> Result<parcel_css::stylesheet::StyleAttribute<'a>, E>
-    {
+    fn try_new<E>(
+        code: String,
+        parser: impl FnOnce(&'a str) -> Result<parcel_css::stylesheet::StyleAttribute<'a>, E>
+    ) -> Result<ParsedStyleAttributeProvider<'a>, E> {
         Ok(
             ParsedStyleAttributeProvider {
                 handle: OwningHandle::try_new(
@@ -117,7 +117,7 @@ impl<'a> ParsedStyleAttributeProvider<'a> {
 
                     |code_ptr| parser(
                         unsafe { &*code_ptr }
-                    ).map(|stylesheet| Box::new(RefCell::new(stylesheet)))
+                    ).map(|attribute| Box::new(RefCell::new(attribute)))
                 )?
             }
         )
