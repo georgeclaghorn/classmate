@@ -533,9 +533,9 @@ dependencies = [
 
 [[package]]
 name = "parcel_css"
-version = "1.0.0-alpha.25"
+version = "1.0.0-alpha.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a9ad7a2d43482edd31d8e0bdb31fd68cce13ee044e387140684fee671b802d7a"
+checksum = "efba96e7c753883586f37512e3f98d16e51b44bd293bb5e3790277cd31378e17"
 dependencies = [
  "bitflags",
  "const-str",
@@ -547,7 +547,6 @@ dependencies = [
  "parcel_selectors",
  "parcel_sourcemap",
  "rayon",
- "retain_mut",
  "serde",
  "smallvec",
 ]
@@ -844,12 +843,6 @@ name = "regex-syntax"
 version = "0.6.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f497285884f3fcff424ffc933e56d7cbca511def0c9831a7f9b5f6153e3cc89b"
-
-[[package]]
-name = "retain_mut"
-version = "0.1.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8c31b5c4033f8fdde8700e4657be2c497e7288f01515be52168c631e2e4d4086"
 
 [[package]]
 name = "rkyv"

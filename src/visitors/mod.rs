@@ -4,7 +4,7 @@ mod proxy;
 pub use proxy::ProxyVisitor;
 
 pub trait Visitor<E>:
-    for<'r> Visit<parcel_css::stylesheet::StyleSheet<'r>, E> +
+    for<'r, 's> Visit<parcel_css::stylesheet::StyleSheet<'r, 's>, E> +
     for<'r> Visit<parcel_css::stylesheet::StyleAttribute<'r>, E> +
     for<'r> Visit<parcel_css::rules::CssRuleList<'r>, E> +
     for<'r> Visit<parcel_css::rules::CssRule<'r>, E> +
@@ -42,6 +42,7 @@ pub trait Visitor<E>:
     for<'r> Visit<parcel_css::properties::custom::CustomProperty<'r>, E> +
     for<'r> Visit<parcel_css::properties::custom::TokenList<'r>, E> +
     for<'r> Visit<parcel_css::properties::custom::TokenOrValue<'r>, E> +
+    for<'r> Visit<parcel_css::properties::custom::Variable<'r>, E> +
     for<'r> Visit<parcel_css::values::image::Image<'r>, E> +
     for<'r> Visit<parcel_css::values::image::ImageSet<'r>, E> +
     for<'r> Visit<parcel_css::values::image::ImageSetOption<'r>, E> +

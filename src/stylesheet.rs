@@ -12,11 +12,11 @@ use owning_ref::OwningHandle;
 use tap::Tap;
 use crate::visitors::ProxyVisitor;
 
-struct Stylesheet<'a> {
-    provider: Box<dyn StylesheetProvider<'a>>
+struct Stylesheet<'a, 'o> {
+    provider: Box<dyn StylesheetProvider<'a, 'o>>
 }
 
-impl<'a> Stylesheet<'a> {
+impl<'a, 'o> Stylesheet<'a, 'o> {
     fn parse(args: &[Value]) -> Result<Value, Error> {
         let (code, filename) = scan_parse_args(args)?;
 
@@ -41,7 +41,7 @@ impl<'a> Stylesheet<'a> {
             ))
     }
 
-    fn new() -> Result<Stylesheet<'a>, Error> {
+    fn new() -> Result<Stylesheet<'a, 'o>, Error> {
         Err(
             Error::new(
                 magnus::exception::not_imp_error(),
@@ -79,7 +79,7 @@ impl<'a> Stylesheet<'a> {
     }
 }
 
-unsafe impl<'a> TypedData for Stylesheet<'a> {
+unsafe impl<'a, 'o> TypedData for Stylesheet<'a, 'o> {
     fn class() -> RClass {
         *memoize!(
             RClass:
@@ -102,28 +102,28 @@ unsafe impl<'a> TypedData for Stylesheet<'a> {
     }
 }
 
-impl<'a> DataTypeFunctions for Stylesheet<'a> { }
+impl<'a, 'o> DataTypeFunctions for Stylesheet<'a, 'o> { }
 
-pub trait StylesheetProvider<'a> {
-    fn borrow(&self) -> Ref<'a, StyleSheet>;
-    fn borrow_mut(&self) -> RefMut<'a, StyleSheet>;
+pub trait StylesheetProvider<'a, 'o> {
+    fn borrow(&self) -> Ref<'_, StyleSheet<'a, 'o>>;
+    fn borrow_mut(&self) -> RefMut<'_, StyleSheet<'a, 'o>>;
 }
 
-type ParsedStylesheetHandle<'a> = OwningHandle<
+type ParsedStylesheetHandle<'a, 'o> = OwningHandle<
     String,
     OwningHandle<
         String,
-        Box<RefCell<StyleSheet<'a>>>
+        Box<RefCell<StyleSheet<'a, 'o>>>
     >
 >;
 
-struct ParsedStylesheetProvider<'a> {
-    handle: ParsedStylesheetHandle<'a>
+struct ParsedStylesheetProvider<'a, 'o> {
+    handle: ParsedStylesheetHandle<'a, 'o>
 }
 
-impl<'a> ParsedStylesheetProvider<'a> {
-    fn try_new<P, E>(filename: String, code: String, parser: P) -> Result<ParsedStylesheetProvider<'a>, E>
-    where P: FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a>, E> {
+impl<'a, 'o> ParsedStylesheetProvider<'a, 'o> {
+    fn try_new<P, E>(filename: String, code: String, parser: P) -> Result<ParsedStylesheetProvider<'a, 'o>, E>
+    where P: FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E> {
         Ok(
             ParsedStylesheetProvider {
                 handle: OwningHandle::try_new(
@@ -143,12 +143,12 @@ impl<'a> ParsedStylesheetProvider<'a> {
     }
 }
 
-impl<'a> StylesheetProvider<'a> for ParsedStylesheetProvider<'a> {
-    fn borrow(&self) -> Ref<'a, StyleSheet> {
+impl<'a, 'o> StylesheetProvider<'a, 'o> for ParsedStylesheetProvider<'a, 'o> {
+    fn borrow(&self) -> Ref<'_, StyleSheet<'a, 'o>> {
         self.handle.borrow()
     }
 
-    fn borrow_mut(&self) -> RefMut<'a, StyleSheet> {
+    fn borrow_mut(&self) -> RefMut<'_, StyleSheet<'a, 'o>> {
         self.handle.borrow_mut()
     }
 }

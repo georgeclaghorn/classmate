@@ -50,7 +50,7 @@ impl<E> Visit<ImportRule<'_>, E> for ProxyVisitor<E> {
 
 visit! {
     impl<T, E> Visit<T, E> for ProxyVisitor<E> where T in [
-        parcel_css::stylesheet::StyleSheet<'_>,
+        parcel_css::stylesheet::StyleSheet<'_, '_>,
         parcel_css::stylesheet::StyleAttribute<'_>,
 
         parcel_css::rules::CssRuleList<'_>,
@@ -90,6 +90,7 @@ visit! {
         parcel_css::properties::custom::CustomProperty<'_>,
         parcel_css::properties::custom::TokenList<'_>,
         parcel_css::properties::custom::TokenOrValue<'_>,
+        parcel_css::properties::custom::Variable<'_>,
 
         parcel_css::values::image::Image<'_>,
         parcel_css::values::image::ImageSet<'_>,
