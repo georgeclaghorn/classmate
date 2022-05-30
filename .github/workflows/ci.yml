@@ -18,6 +18,12 @@ jobs:
           rubygems: latest
           bundler-cache: true
 
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.61
+          override: true
+
       - name: Compile native extension
         run: bundle exec rake compile
 
@@ -31,6 +37,13 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v1
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.61
+          components: clippy
+          override: true
 
       - name: Run Clippy
         run: cargo clippy --no-deps
