@@ -1,4 +1,3 @@
-use std::cell::{RefCell, Ref, RefMut};
 use magnus::{
     define_module, current_receiver,
     Value, RModule, RClass, Module, Object, Error,
@@ -7,9 +6,11 @@ use magnus::{
     block::yield_value
 };
 use parcel_css::stylesheet::{MinifyOptions, PrinterOptions};
-use owning_ref::OwningHandle;
 use tap::Tap;
-use crate::visitors::ProxyVisitor;
+use crate::{
+    providers::style_attribute::{StyleAttributeProvider, ParsedStyleAttributeProvider},
+    visitors::ProxyVisitor
+};
 
 struct StyleAttribute<'a> {
     provider: Box<dyn StyleAttributeProvider<'a>>
@@ -90,49 +91,6 @@ unsafe impl<'a> TypedData for StyleAttribute<'a> {
 }
 
 impl<'a> DataTypeFunctions for StyleAttribute<'a> { }
-
-pub trait StyleAttributeProvider<'a> {
-    fn borrow(&self) -> Ref<'a, parcel_css::stylesheet::StyleAttribute>;
-    fn borrow_mut(&self) -> RefMut<'a, parcel_css::stylesheet::StyleAttribute>;
-}
-
-type ParsedStyleAttributeHandle<'a> = OwningHandle<
-    String,
-    Box<RefCell<parcel_css::stylesheet::StyleAttribute<'a>>>
->;
-
-struct ParsedStyleAttributeProvider<'a> {
-    handle: ParsedStyleAttributeHandle<'a>
-}
-
-impl<'a> ParsedStyleAttributeProvider<'a> {
-    fn try_new<E>(
-        code: String,
-        parser: impl FnOnce(&'a str) -> Result<parcel_css::stylesheet::StyleAttribute<'a>, E>
-    ) -> Result<ParsedStyleAttributeProvider<'a>, E> {
-        Ok(
-            ParsedStyleAttributeProvider {
-                handle: OwningHandle::try_new(
-                    code,
-
-                    |code_ptr| parser(
-                        unsafe { &*code_ptr }
-                    ).map(|attribute| Box::new(RefCell::new(attribute)))
-                )?
-            }
-        )
-    }
-}
-
-impl<'a> StyleAttributeProvider<'a> for ParsedStyleAttributeProvider<'a> {
-    fn borrow(&self) -> Ref<'a, parcel_css::stylesheet::StyleAttribute> {
-        self.handle.borrow()
-    }
-
-    fn borrow_mut(&self) -> RefMut<'a, parcel_css::stylesheet::StyleAttribute> {
-        self.handle.borrow_mut()
-    }
-}
 
 pub fn initialize() -> Result<(), Error> {
     let module = define_module("Classmate")?;

@@ -6,6 +6,7 @@ mod errors;
 mod stylesheet;
 mod style_attribute;
 
+mod providers;
 mod visitors;
 
 #[magnus::init]

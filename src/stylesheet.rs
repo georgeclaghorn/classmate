@@ -1,4 +1,3 @@
-use std::cell::{RefCell, Ref, RefMut};
 use magnus::{
     define_module, current_receiver,
     Value, RModule, RClass, Module, Object, Error,
@@ -8,9 +7,11 @@ use magnus::{
     scan_args::{scan_args, get_kwargs}
 };
 use parcel_css::stylesheet::{StyleSheet, ParserOptions, MinifyOptions, PrinterOptions};
-use owning_ref::OwningHandle;
 use tap::Tap;
-use crate::visitors::ProxyVisitor;
+use crate::{
+    providers::stylesheet::{StylesheetProvider, ParsedStylesheetProvider},
+    visitors::ProxyVisitor
+};
 
 struct Stylesheet<'a, 'o> {
     provider: Box<dyn StylesheetProvider<'a, 'o>>
@@ -103,58 +104,6 @@ unsafe impl<'a, 'o> TypedData for Stylesheet<'a, 'o> {
 }
 
 impl<'a, 'o> DataTypeFunctions for Stylesheet<'a, 'o> { }
-
-pub trait StylesheetProvider<'a, 'o> {
-    fn borrow(&self) -> Ref<'_, StyleSheet<'a, 'o>>;
-    fn borrow_mut(&self) -> RefMut<'_, StyleSheet<'a, 'o>>;
-}
-
-type ParsedStylesheetHandle<'a, 'o> = OwningHandle<
-    String,
-    OwningHandle<
-        String,
-        Box<RefCell<StyleSheet<'a, 'o>>>
-    >
->;
-
-struct ParsedStylesheetProvider<'a, 'o> {
-    handle: ParsedStylesheetHandle<'a, 'o>
-}
-
-impl<'a, 'o> ParsedStylesheetProvider<'a, 'o> {
-    fn try_new<E>(
-        filename: String,
-        code: String,
-        parser: impl FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E>
-    ) -> Result<ParsedStylesheetProvider<'a, 'o>, E> {
-        Ok(
-            ParsedStylesheetProvider {
-                handle: OwningHandle::try_new(
-                    filename,
-
-                    |filename_ptr| OwningHandle::try_new(
-                        code,
-
-                        |code_ptr| parser(
-                            unsafe { &*filename_ptr },
-                            unsafe { &*code_ptr }
-                        ).map(|stylesheet| Box::new(RefCell::new(stylesheet)))
-                    )
-                )?
-            }
-        )
-    }
-}
-
-impl<'a, 'o> StylesheetProvider<'a, 'o> for ParsedStylesheetProvider<'a, 'o> {
-    fn borrow(&self) -> Ref<'_, StyleSheet<'a, 'o>> {
-        self.handle.borrow()
-    }
-
-    fn borrow_mut(&self) -> RefMut<'_, StyleSheet<'a, 'o>> {
-        self.handle.borrow_mut()
-    }
-}
 
 fn scan_parse_args(args: &[Value]) -> Result<(String, Option<String>), Error> {
     let args = scan_args(args)?;
