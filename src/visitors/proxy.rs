@@ -13,8 +13,8 @@ impl<E> ProxyVisitor<E> {
         visitable.accept(self)
     }
 
-    fn translate(&self, resource: &str) -> Result<Option<String>, E> {
-        (self.callback)(resource)
+    fn proxy(&self, url: &str) -> Result<Option<String>, E> {
+        (self.callback)(url)
     }
 }
 
@@ -24,7 +24,7 @@ use parcel_css::values::url::Url;
 
 impl<E> Visit<Url<'_>, E> for ProxyVisitor<E> {
     fn visit(&self, token: &mut Url) -> Result<(), E> {
-        self.translate(&token.url).map(|result| {
+        self.proxy(&token.url).map(|result| {
             if let Some(url) = result {
                 if token.url != url {
                     token.url = url.into();
@@ -38,7 +38,7 @@ use parcel_css::rules::import::ImportRule;
 
 impl<E> Visit<ImportRule<'_>, E> for ProxyVisitor<E> {
     fn visit(&self, rule: &mut ImportRule) -> Result<(), E> {
-        self.translate(&rule.url).map(|result| {
+        self.proxy(&rule.url).map(|result| {
             if let Some(url) = result {
                 if rule.url != url {
                     rule.url = url.into()
