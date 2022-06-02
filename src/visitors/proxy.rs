@@ -1,12 +1,12 @@
 use super::{Visitor, Visit, Visitable, visit};
 
 pub struct ProxyVisitor<E> {
-    callback: Box<dyn Fn(&str) -> Result<Option<String>, E>>
+    proxy: Box<dyn Fn(&str) -> Result<Option<String>, E>>
 }
 
 impl<E> ProxyVisitor<E> {
-    pub fn new(callback: impl Fn(&str) -> Result<Option<String>, E> + 'static) -> ProxyVisitor<E> {
-        ProxyVisitor { callback: Box::new(callback) }
+    pub fn new(proxy: impl Fn(&str) -> Result<Option<String>, E> + 'static) -> ProxyVisitor<E> {
+        ProxyVisitor { proxy: Box::new(proxy) }
     }
 
     pub fn visit_from(&self, visitable: &mut impl Visitable) -> Result<(), E> {
@@ -14,7 +14,7 @@ impl<E> ProxyVisitor<E> {
     }
 
     fn proxy(&self, url: &str) -> Result<Option<String>, E> {
-        (self.callback)(url)
+        (self.proxy)(url)
     }
 }
 
