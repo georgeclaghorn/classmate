@@ -46,4 +46,4 @@ jobs:
           override: true
 
       - name: Run Clippy
-        run: cargo clippy --no-deps
+        run: cd ext/classmate && cargo clippy --no-deps

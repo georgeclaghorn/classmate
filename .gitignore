@@ -1,6 +1,9 @@
 /Gemfile.lock
 
 # Build artifacts
-/*.gem
+/pkg
+/checksums
 /target
+/tmp
+/lib/classmate.so
 /lib/classmate.bundle

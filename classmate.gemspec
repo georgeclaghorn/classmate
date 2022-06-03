@@ -10,9 +10,12 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 3.1"
   s.required_rubygems_version = ">= 3.3.10"
 
-  s.files = Dir["Cargo.toml", "Cargo.lock", "src/**/*", "lib/**/*"]
-  s.extensions = ["Cargo.toml"]
+  s.files = Dir["ext/**/*", "src/**/*", "lib/**/*"]
+  s.extensions = ["ext/classmate/extconf.rb"]
 
-  s.add_development_dependency "rake",  "~> 13.0"
+  s.add_dependency "rb_sys", "~> 0.9.3"
+
+  s.add_development_dependency "rake", "~> 13.0"
+  s.add_development_dependency "rake-compiler", "~> 1.2"
   s.add_development_dependency "rspec", "~> 3.11"
 end
