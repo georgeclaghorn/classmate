@@ -63,10 +63,7 @@ attribute.to_s
 
 Classmate requires Ruby 3.1 or later.
 
-The following are required to compile Classmate’s native extension:
-
-* Rubygems 3.3.10 or later
-* Rust 1.61 or later
+Rust 1.61 or later is required to compile Classmate’s native extension.
 
 ### Native gems
 

@@ -23,8 +23,6 @@ Rake::ExtensionTask.new("classmate", GEMSPEC) do |ext|
   ext.cross_platform = PLATFORMS
 
   ext.cross_compiling do |gemspec|
-    gemspec.required_rubygems_version = nil
-
     gemspec.files.reject! { |file| file.match?(/\Aext\//) }
     gemspec.dependencies.reject! { |dependency| dependency.name == "rb_sys" }
   end

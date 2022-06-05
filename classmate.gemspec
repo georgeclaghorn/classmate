@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.license  = "MIT"
 
   s.required_ruby_version = ">= 3.1"
-  s.required_rubygems_version = ">= 3.3.10"
 
   s.files = Dir["ext/**/*", "src/**/*", "lib/**/*"]
   s.extensions = ["ext/classmate/extconf.rb"]
