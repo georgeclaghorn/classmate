@@ -1,8 +1,6 @@
 ARG RCD_VERSION=1.2.1
 FROM larskanis/rake-compiler-dock-mri-x86_64-darwin:${RCD_VERSION}
 
-ARG RUBYGEMS_VERSION=3.3.15
-
 ENV RUBY_TARGET="x86_64-darwin" \
     RUST_TARGET="x86_64-apple-darwin" \
     PKG_CONFIG_ALLOW_CROSS="1" \
@@ -17,9 +15,6 @@ RUN /rust.sh "$RUST_TARGET" && rm /rust.sh
 
 COPY rubybashrc.sh /
 RUN /rubybashrc.sh && rm /rubybashrc.sh
-
-SHELL [ "bash", "-c" ]
-RUN gem update --system "$RUBYGEMS_VERSION" --no-document
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends clang libclang-dev && \
