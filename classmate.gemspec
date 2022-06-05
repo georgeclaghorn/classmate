@@ -17,5 +17,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake", "~> 13.0"
   s.add_development_dependency "rake-compiler", "~> 1.2"
+  s.add_development_dependency "rake-compiler-dock", "~> 1.2"
   s.add_development_dependency "rspec", "~> 3.11"
 end
