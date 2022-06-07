@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 3.1"
 
-  s.files = Dir["ext/**/*", "src/**/*", "lib/**/*"]
+  s.files = Dir["ext/**/*", "lib/**/*"]
   s.extensions = ["ext/classmate/extconf.rb"]
 
   s.add_dependency "rb_sys", "~> 0.9.3"
