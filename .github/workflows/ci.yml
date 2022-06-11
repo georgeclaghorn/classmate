@@ -24,6 +24,10 @@ jobs:
           toolchain: 1.61
           override: true
 
+      - uses: Swatinem/rust-cache@v1
+        with:
+          working-directory: ext/classmate
+
       - name: Compile native extension
         run: bundle exec rake compile
 
@@ -44,6 +48,10 @@ jobs:
           toolchain: 1.61
           components: clippy
           override: true
+
+      - uses: Swatinem/rust-cache@v1
+        with:
+          working-directory: ext/classmate
 
       - name: Run Clippy
         run: cd ext/classmate && cargo clippy --no-deps
