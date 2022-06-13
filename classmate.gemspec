@@ -1,6 +1,8 @@
+require_relative "lib/classmate/version"
+
 Gem::Specification.new do |s|
   s.name     = "classmate"
-  s.version  = "0.4.0"
+  s.version  = Classmate::VERSION
   s.authors  = "George Claghorn"
   s.email    = "georgeclaghorn@gmail.com"
   s.summary  = "CSS toolkit"
