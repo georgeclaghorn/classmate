@@ -47,6 +47,11 @@ namespace :gem do
   end
 end
 
+task :clippy do
+  cd "ext/classmate"
+  sh "cargo", "clippy"
+end
+
 task console: :compile do
   ruby "bin/console"
 end
