@@ -41,7 +41,7 @@ namespace :gem do
     task "native:#{platform}": :prepare do
       RakeCompilerDock.sh <<~SH, image: "georgeclaghorn/classmate-build:#{platform}", platform: platform
         bundle --local
-        rake native:#{platform} gem
+        PROFILE=#{ENV.fetch("PROFILE", "release")} rake native:#{platform} gem
       SH
     end
   end
