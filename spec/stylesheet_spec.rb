@@ -104,19 +104,41 @@ describe Classmate::Stylesheet do
     end
   end
 
-  describe "#to_css" do
+  shared_examples "#to_css" do |name|
+    subject { stylesheet.method(name) }
+
     let(:stylesheet) { Classmate::Stylesheet.parse("body { font-size: 16px; }") }
 
-    it "serializes the stylesheet to CSS" do
-      expect(stylesheet.to_css).to eq("body {\n  font-size: 16px;\n}\n")
+    context "when minify: is not provided" do
+      it "serializes the stylesheet to CSS" do
+        expect(subject.call).to eq("body {\n  font-size: 16px;\n}\n")
+      end
+    end
+
+    context "when minify: is true" do
+      it "minifies the output" do
+        expect(subject.call(minify: true)).to eq("body{font-size:16px}")
+      end
+    end
+
+    context "when minify: is truthy" do
+      it "minifies the output" do
+        expect(subject.call(minify: :foo)).to eq("body{font-size:16px}")
+      end
+    end
+
+    context "when minify: is false" do
+      it "does not minify the output" do
+        expect(subject.call(minify: false)).to eq("body {\n  font-size: 16px;\n}\n")
+      end
     end
   end
 
-  describe "#to_s" do
-    let(:stylesheet) { Classmate::Stylesheet.parse("body { font-size: 16px; }") }
+  describe "#to_css" do
+    it_behaves_like "#to_css", :to_css
+  end
 
-    it "serializes the stylesheet to CSS" do
-      expect(stylesheet.to_s).to eq("body {\n  font-size: 16px;\n}\n")
-    end
+  describe "#to_s" do
+    it_behaves_like "#to_css", :to_s
   end
 end

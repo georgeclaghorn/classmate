@@ -6,11 +6,12 @@ use magnus::{
     block::yield_value,
     scan_args::{scan_args, get_kwargs}
 };
-use parcel_css::stylesheet::{StyleSheet, ParserOptions, MinifyOptions, PrinterOptions};
+use parcel_css::stylesheet::{StyleSheet, ParserOptions, MinifyOptions};
 use tap::Tap;
 use crate::{
     providers::stylesheet::{StylesheetProvider, ParsedStylesheetProvider},
-    visitors::ProxyVisitor
+    visitors::ProxyVisitor,
+    shared::printing::scan_printer_options_from_args
 };
 
 struct Stylesheet<'a, 'o> {
@@ -68,11 +69,11 @@ impl<'a, 'o> Stylesheet<'a, 'o> {
             .and_then(|_| current_receiver())
     }
 
-    fn to_css(&'a self) -> Result<String, Error> {
+    fn to_css(&'a self, args: &[Value]) -> Result<Value, Error> {
         self.provider
             .borrow()
-            .to_css(PrinterOptions::default())
-            .map(|output| output.code)
+            .to_css(scan_printer_options_from_args(args)?)
+            .map(|output| Value::from(output.code))
             .map_err(|error| Error::new(
                 crate::errors::print_error(),
                 error.to_string()
@@ -132,6 +133,6 @@ pub fn initialize() -> Result<(), Error> {
 
     class.define_method("proxy", method!(Stylesheet::proxy, 0))?;
 
-    class.define_method("to_css", method!(Stylesheet::to_css, 0))?;
+    class.define_method("to_css", method!(Stylesheet::to_css, -1))?;
     class.define_alias("to_s", "to_css")
 }

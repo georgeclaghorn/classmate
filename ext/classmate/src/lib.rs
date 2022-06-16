@@ -5,6 +5,7 @@ use magnus::Error;
 mod errors;
 mod stylesheet;
 mod style_attribute;
+mod shared;
 
 mod providers;
 mod visitors;

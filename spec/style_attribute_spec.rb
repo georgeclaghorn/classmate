@@ -61,4 +61,42 @@ describe Classmate::StyleAttribute do
       expect { attribute.proxy { raise "Boom!" } }.to raise_error(RuntimeError, "Boom!")
     end
   end
+
+  shared_examples "#to_css" do |name|
+    subject { attribute.method(name) }
+
+    let(:attribute) { Classmate::StyleAttribute.parse("font-size: 16px;") }
+
+    context "when minify: is not provided" do
+      it "serializes the attribute to CSS" do
+        expect(subject.call).to eq("font-size: 16px")
+      end
+    end
+
+    context "when minify: is true" do
+      it "minifies the output" do
+        expect(subject.call(minify: true)).to eq("font-size:16px")
+      end
+    end
+
+    context "when minify: is truthy" do
+      it "minifies the output" do
+        expect(subject.call(minify: :foo)).to eq("font-size:16px")
+      end
+    end
+
+    context "when minify: is false" do
+      it "does not minify the output" do
+        expect(subject.call(minify: false)).to eq("font-size: 16px")
+      end
+    end
+  end
+
+  describe "#to_css" do
+    it_behaves_like "#to_css", :to_css
+  end
+
+  describe "#to_s" do
+    it_behaves_like "#to_css", :to_s
+  end
 end

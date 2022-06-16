@@ -5,11 +5,12 @@ use magnus::{
     class::object,
     block::yield_value
 };
-use parcel_css::stylesheet::{MinifyOptions, PrinterOptions};
+use parcel_css::stylesheet::MinifyOptions;
 use tap::Tap;
 use crate::{
     providers::style_attribute::{StyleAttributeProvider, ParsedStyleAttributeProvider},
-    visitors::ProxyVisitor
+    visitors::ProxyVisitor,
+    shared::printing::scan_printer_options_from_args
 };
 
 struct StyleAttribute<'a> {
@@ -55,11 +56,11 @@ impl<'a> StyleAttribute<'a> {
             .and_then(|_| current_receiver())
     }
 
-    fn to_css(&'a self) -> Result<String, Error> {
+    fn to_css(&'a self, args: &[Value]) -> Result<Value, Error> {
         self.provider
             .borrow()
-            .to_css(PrinterOptions::default())
-            .map(|output| output.code)
+            .to_css(scan_printer_options_from_args(args)?)
+            .map(|output| Value::from(output.code))
             .map_err(|error| Error::new(
                 crate::errors::print_error(),
                 error.to_string()
@@ -103,6 +104,6 @@ pub fn initialize() -> Result<(), Error> {
 
     class.define_method("proxy", method!(StyleAttribute::proxy, 0))?;
 
-    class.define_method("to_css", method!(StyleAttribute::to_css, 0))?;
+    class.define_method("to_css", method!(StyleAttribute::to_css, -1))?;
     class.define_alias("to_s", "to_css")
 }
