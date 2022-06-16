@@ -6,6 +6,16 @@ It is based on [@parcel/css], a browser-grade CSS parser, and written in Rust as
 
 [@parcel/css]: https://github.com/parcel-bundler/parcel-css
 
+**Quick links**
+
+* [API documentation]
+* [Releases/changelog]
+* [`classmate` on Rubygems.org]
+
+[API documentation]: https://github.com/georgeclaghorn/classmate/blob/main/docs/api/index.md
+[Releases/changelog]: https://github.com/georgeclaghorn/classmate/releases
+[`classmate` on Rubygems.org]: https://rubygems.org/gems/classmate
+
 ## Installation
 
 Run `gem install classmate` or `bundle add classmate`.
@@ -58,6 +68,8 @@ stylesheet.to_s
 attribute.to_css
 attribute.to_s
 ```
+
+**See the [API documentation] for more advanced usage.**
 
 ## Requirements
 
