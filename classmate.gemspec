@@ -11,6 +11,12 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 3.1"
 
+  s.metadata = {
+    "source_code_uri"   => "https://github.com/georgeclaghorn/classmate",
+    "changelog_uri"     => "https://github.com/georgeclaghorn/classmate/releases",
+    "documentation_uri" => "https://github.com/georgeclaghorn/classmate/blob/v#{s.version}/docs/api/index.md"
+  }
+
   s.files = Dir["ext/**/*", "lib/**/*"]
   s.extensions = ["ext/classmate/extconf.rb"]
 
