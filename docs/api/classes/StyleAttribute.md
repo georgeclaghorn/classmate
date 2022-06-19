@@ -146,6 +146,25 @@ Raises [`Classmate::PrintError`][PrintError] when the style attribute cannot be 
 
 [PrintError]: ./PrintError.md
 
+##### Examples
+
+```ruby
+attribute = Classmate::StyleAttribute.parse(<<~CSS)
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+CSS
+
+# Output:
+#
+#   font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 16px
+puts attribute.to_css
+
+# Output:
+#
+#   font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px
+puts attribute.to_css(minify: true)
+```
+
 <h3 id="to_s"><code>#to_s(minify: false) → String</code></h3>
 
 *Alias for [`#to_css`](#to_css).*

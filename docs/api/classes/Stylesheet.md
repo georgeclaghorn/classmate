@@ -192,6 +192,28 @@ Raises [`Classmate::PrintError`][PrintError] when the stylesheet cannot be conve
 
 [PrintError]: ./PrintError.md
 
+##### Examples
+
+```ruby
+stylesheet = Classmate::Stylesheet.parse(<<~CSS)
+  body {
+    background-image: url("https://example.com/foo.png");
+  }
+CSS
+
+# Output:
+#
+#   body {
+#     background-image: url("https://example.com/foo.png");
+#   }
+puts stylesheet.to_css
+
+# Output:
+#
+#   body{background-image:url(https://example.com/foo.png)}
+puts stylesheet.to_css(minify: true)
+```
+
 <h3 id="to_s"><code>#to_s(minify: false) → String</code></h3>
 
 *Alias for [`#to_css`](#to_css).*
