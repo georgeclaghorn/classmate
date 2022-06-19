@@ -1,0 +1,62 @@
+name: Gems
+on: workflow_dispatch
+
+jobs:
+  source-gem:
+    name: Source gem
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+
+      - name: Install gem dependencies
+        run: bundle install
+
+      - name: Build source gem
+        run: bundle exec rake build
+
+      - name: Upload gem
+        uses: actions/upload-artifact@v3
+        with:
+          name: gems.zip
+          path: pkg/*.gem
+
+  native-gem:
+    name: Native gem
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        platform:
+          - x86_64-linux
+          - x86_64-darwin
+          - arm64-darwin
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+
+      - name: Install gem dependencies
+        run: bundle install
+
+      - name: Build native gem
+        env:
+          PROFILE: release
+        run: bundle exec rake gem:native:${{ matrix.platform }}
+
+      - name: Upload gem
+        uses: actions/upload-artifact@v3
+        with:
+          name: gems.zip
+          path: pkg/*.gem
