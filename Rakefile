@@ -5,7 +5,7 @@ require "rake/extensiontask"
 
 GEMSPEC = Bundler.load_gemspec("classmate.gemspec")
 
-PLATFORMS = %w[ x86_64-linux x86_64-darwin arm64-darwin ]
+PLATFORMS = %w[ x86_64-linux aarch64-linux x86_64-darwin arm64-darwin ]
 
 ENV["RUBY_CC_VERSION"] = "3.1.0"
 
@@ -43,6 +43,19 @@ namespace :gem do
         bundle --local
         PROFILE=#{ENV.fetch("PROFILE", "release")} rake native:#{platform} gem
       SH
+    end
+  end
+end
+
+PLATFORMS.each do |platform|
+  task "native:#{GEMSPEC.name}:#{platform}" do
+    # FIXME: Gem::PackageTask defines a task with the gemspec files as prerequisites, even though
+    # Rake::ExtensionTask clears Gem::PackageTask#package_files. This causes e.g.
+    # `rake native:aarch64-linux gem` to build an x86_64-linux native extension unnecessarily when
+    # run from an x86_64-linux environment, because lib/classmate.so is in the gem task's prerequisites.
+    Rake::Task["pkg/#{GEMSPEC.name}-#{GEMSPEC.version}-#{platform}.gem"].tap do |task|
+      task.clear_prerequisites
+      task.enhance [ "pkg", "pkg/#{GEMSPEC.name}-#{GEMSPEC.version}-#{platform}" ]
     end
   end
 end

@@ -83,7 +83,7 @@ A native gem contains a precompiled native extension and does not require a comp
 
 Classmate native gems are available for the following platforms:
 
-* Linux: x86-64
+* Linux: x86-64 and aarch64
 * macOS: x86-64 and arm64
 
 No special installation method is needed for native gems. Rubygems and Bundler automatically
