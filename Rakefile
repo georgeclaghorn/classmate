@@ -36,7 +36,7 @@ namespace :gem do
   end
 
   PLATFORMS.each do |platform|
-    multitask native: "gem:native:#{platform}"
+    task native: "gem:native:#{platform}"
 
     task "native:#{platform}": :prepare do
       RakeCompilerDock.sh <<~SH, image: "georgeclaghorn/classmate-build:#{platform}", platform: platform
