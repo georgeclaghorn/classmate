@@ -146,7 +146,7 @@ Raises [`Classmate::PrintError`][PrintError] when the style attribute cannot be 
 
 [PrintError]: ./PrintError.md
 
-##### Examples
+#### Examples
 
 ```ruby
 attribute = Classmate::StyleAttribute.parse(<<~CSS)

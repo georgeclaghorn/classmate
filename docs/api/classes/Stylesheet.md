@@ -192,7 +192,7 @@ Raises [`Classmate::PrintError`][PrintError] when the stylesheet cannot be conve
 
 [PrintError]: ./PrintError.md
 
-##### Examples
+#### Examples
 
 ```ruby
 stylesheet = Classmate::Stylesheet.parse(<<~CSS)
