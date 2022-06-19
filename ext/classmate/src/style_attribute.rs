@@ -3,7 +3,7 @@ use magnus::{
     Value, RModule, RClass, Module, Object, Error,
     TypedData, DataType, DataTypeFunctions,
     class::object,
-    block::yield_value
+    block::{block_given, yield_value}
 };
 use parcel_css::stylesheet::MinifyOptions;
 use tap::Tap;
@@ -51,9 +51,18 @@ impl<'a> StyleAttribute<'a> {
     }
 
     fn proxy(&'a self) -> Result<Value, Error> {
-        ProxyVisitor::new(|resource| yield_value(resource.to_string()))
-            .visit_from(&mut self.provider.borrow_mut())
-            .and_then(|_| current_receiver())
+        if block_given() {
+            ProxyVisitor::new(|resource| yield_value(resource.to_string()))
+                .visit_from(&mut self.provider.borrow_mut())
+                .and_then(|_| current_receiver())
+        } else {
+            Err(
+                Error::new(
+                    magnus::exception::arg_error(),
+                    "no block given"
+                )
+            )
+        }
     }
 
     fn to_css(&'a self, args: &[Value]) -> Result<Value, Error> {

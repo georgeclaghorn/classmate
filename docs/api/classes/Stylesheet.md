@@ -125,7 +125,7 @@ Returns self for convenient chaining.
 
 #### Errors
 
-Raises [`LocalJumpError`][LocalJumpError] if no block is provided.
+Raises [`ArgumentError`][ArgumentError] if no block is provided.
 
 Raises [`TypeError`][TypeError] if the provided block returns anything other than a `String` or `nil`.
 
@@ -133,7 +133,7 @@ Raises any error the provided block raises.
 
 If an error is raised, the stylesheet may be partially modified.
 
-[LocalJumpError]: https://ruby-doc.org/core-3.1.0/LocalJumpError.html
+[ArgumentError]: https://ruby-doc.org/core-3.1.0/ArgumentError.html
 
 #### Examples
 

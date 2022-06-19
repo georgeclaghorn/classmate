@@ -102,6 +102,10 @@ describe Classmate::Stylesheet do
     it "raises when the block raises" do
       expect { stylesheet.proxy { raise "Boom!" } }.to raise_error(RuntimeError, "Boom!")
     end
+
+    it "raises when no block is given" do
+      expect { stylesheet.proxy }.to raise_error(ArgumentError, "no block given")
+    end
   end
 
   shared_examples "#to_css" do |name|
