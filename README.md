@@ -2,9 +2,10 @@
 
 Classmate is a CSS toolkit for Ruby. It parses, transforms, and generates CSS.
 
-It is based on [@parcel/css], a browser-grade CSS parser, and written in Rust as a Ruby native extension.
+It’s based on [@parcel/css], a browser-grade CSS parser, and written in [Rust] as a Ruby native extension.
 
 [@parcel/css]: https://github.com/parcel-bundler/parcel-css
+[Rust]: https://www.rust-lang.org
 
 **Quick links**
 
@@ -75,7 +76,7 @@ attribute.to_s
 
 Classmate requires Ruby 3.1 or later.
 
-Rust 1.61 or later is required to compile Classmate’s native extension.
+[Rust] 1.61 or later is required to compile Classmate’s native extension.
 
 ### Native gems
 
