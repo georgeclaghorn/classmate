@@ -43,6 +43,7 @@ pub trait Visitor<E>:
     for<'r> Visit<parcel_css::properties::custom::TokenList<'r>, E> +
     for<'r> Visit<parcel_css::properties::custom::TokenOrValue<'r>, E> +
     for<'r> Visit<parcel_css::properties::custom::Variable<'r>, E> +
+    for<'r> Visit<parcel_css::properties::custom::UnresolvedColor<'r>, E> +
     for<'r> Visit<parcel_css::values::image::Image<'r>, E> +
     for<'r> Visit<parcel_css::values::image::ImageSet<'r>, E> +
     for<'r> Visit<parcel_css::values::image::ImageSetOption<'r>, E> +

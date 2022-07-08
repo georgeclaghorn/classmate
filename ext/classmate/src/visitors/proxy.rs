@@ -91,6 +91,7 @@ visit! {
         parcel_css::properties::custom::TokenList<'_>,
         parcel_css::properties::custom::TokenOrValue<'_>,
         parcel_css::properties::custom::Variable<'_>,
+        parcel_css::properties::custom::UnresolvedColor<'_>,
 
         parcel_css::values::image::Image<'_>,
         parcel_css::values::image::ImageSet<'_>,

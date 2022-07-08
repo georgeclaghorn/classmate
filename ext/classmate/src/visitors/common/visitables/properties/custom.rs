@@ -26,11 +26,12 @@ impl Visitable for TokenOrValue<'_> {
     fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
         visitor.visit(self).and_then(|_| {
             match self {
-                TokenOrValue::Url(url)      => url.accept(visitor),
-                TokenOrValue::Var(variable) => variable.accept(visitor),
+                TokenOrValue::Url(url)               => url.accept(visitor),
+                TokenOrValue::Var(variable)          => variable.accept(visitor),
+                TokenOrValue::UnresolvedColor(color) => color.accept(visitor),
 
-                TokenOrValue::Token(_)      |
-                TokenOrValue::Color(_)      => Ok(())
+                TokenOrValue::Token(_) |
+                TokenOrValue::Color(_) => Ok(())
             }
         })
     }
@@ -43,6 +44,19 @@ impl Visitable for Variable<'_> {
                 fallback.accept(visitor)
             } else {
                 Ok(())
+            }
+        })
+    }
+}
+
+use parcel_css::properties::custom::UnresolvedColor;
+
+impl Visitable for UnresolvedColor<'_> {
+    fn accept<E>(&mut self, visitor: &impl Visitor<E>) -> Result<(), E> {
+        visitor.visit(self).and_then(|_| {
+            match self {
+                UnresolvedColor::RGB { alpha, .. } |
+                UnresolvedColor::HSL { alpha, .. } => alpha.accept(visitor)
             }
         })
     }
