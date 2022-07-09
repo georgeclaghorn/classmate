@@ -7,12 +7,14 @@ pub trait StylesheetProvider<'a, 'o> {
     fn borrow_mut(&self) -> RefMut<'_, StyleSheet<'a, 'o>>;
 }
 
+pub struct Input {
+    pub filename: Option<String>,
+    pub code: String
+}
+
 type ParsedStylesheetHandle<'a, 'o> = OwningHandle<
-    String,
-    OwningHandle<
-        String,
-        Box<RefCell<StyleSheet<'a, 'o>>>
-    >
+    Box<Input>,
+    Box<RefCell<StyleSheet<'a, 'o>>>
 >;
 
 pub struct ParsedStylesheetProvider<'a, 'o> {
@@ -21,25 +23,27 @@ pub struct ParsedStylesheetProvider<'a, 'o> {
 
 impl<'a, 'o> ParsedStylesheetProvider<'a, 'o> {
     pub fn try_new<E>(
-        filename: String,
+        filename: Option<String>,
         code: String,
-        parser: impl FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E>
+        parser: impl FnOnce(&'a Input) -> Result<StyleSheet<'a, 'o>, E>
     ) -> Result<ParsedStylesheetProvider<'a, 'o>, E> {
         Self::try_new_handle(filename, code, parser).map(|handle| Self { handle })
     }
 
     fn try_new_handle<E>(
-        filename: String,
+        filename: Option<String>,
         code: String,
-        parser: impl FnOnce(&'a str, &'a str) -> Result<StyleSheet<'a, 'o>, E>
+        parser: impl FnOnce(&'a Input) -> Result<StyleSheet<'a, 'o>, E>
     ) -> Result<ParsedStylesheetHandle<'a, 'o>, E> {
-        OwningHandle::try_new(filename, |filename_ptr| {
-            OwningHandle::try_new(code, |code_ptr| {
-                parser(unsafe { &*filename_ptr }, unsafe { &*code_ptr })
+        OwningHandle::try_new(
+            Box::new(Input { filename, code }),
+
+            |input_ptr| {
+                parser(unsafe { &*input_ptr })
                     .map(RefCell::new)
                     .map(Box::new)
-            })
-        })
+            }
+        )
     }
 }
 

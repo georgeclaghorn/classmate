@@ -23,12 +23,12 @@ impl<'a, 'o> Stylesheet<'a, 'o> {
         let (code, filename) = scan_parse_args(args)?;
 
         let maybe_provider = ParsedStylesheetProvider::try_new(
-            filename.unwrap_or_else(|| String::from("(unknown)")),
+            filename,
             code,
 
-            |filename, code| StyleSheet::parse(
-                filename,
-                code,
+            |input| StyleSheet::parse(
+                input.filename.as_deref().unwrap_or("(unknown)"),
+                input.code.as_str(),
                 ParserOptions::default()
             )
         );
