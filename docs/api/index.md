@@ -2,10 +2,16 @@
 
 Classmate is a [CSS] toolkit for Ruby. It parses, transforms, and generates CSS.
 
-It is based on [@parcel/css], a browser-grade CSS parser, and written in Rust as a Ruby native extension.
+It’s based on [@parcel/css], a browser-grade CSS parser, and written in [Rust] as a Ruby native extension.
+
+The primary Classmate interfaces are the [`Classmate::Stylesheet`](./classes/Stylesheet.md) and
+[`Classmate::StyleAttribute`](./classes/StyleAttribute.md) classes. `Classmate::Stylesheet`
+represents a CSS stylesheet—the contents of a `.css` file or an HTML `<style>` element.
+`Classmate::StyleAttribute` represents a CSS style attribute, as might be found in HTML or SVG documents.
 
 [CSS]: https://developer.mozilla.org/en-US/docs/Web/CSS
 [@parcel/css]: https://github.com/parcel-bundler/parcel-css
+[Rust]: https://www.rust-lang.org
 
 ## Classes
 
