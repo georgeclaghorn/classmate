@@ -24,7 +24,7 @@ impl<'a> StyleAttribute<'a> {
                 code,
 
                 |code| parcel_css::stylesheet::StyleAttribute::parse(
-                    &code,
+                    code,
                     ParserOptions::default()
                 )
             );

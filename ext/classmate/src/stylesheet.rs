@@ -4,7 +4,7 @@ use magnus::{
     TypedData, DataType, DataTypeFunctions,
     class::object,
     block::{block_given, yield_value},
-    scan_args::{scan_args, get_kwargs}
+    scan_args::{scan_args, get_kwargs, Args, KwArgs}
 };
 use parcel_css::stylesheet::{StyleSheet, ParserOptions, MinifyOptions};
 use tap::Tap;
@@ -26,10 +26,10 @@ impl<'a, 'o> Stylesheet<'a, 'o> {
             code,
 
             |code| StyleSheet::parse(
-                &code,
+                code,
 
                 ParserOptions {
-                    filename: filename.unwrap_or("(unknown)".to_owned()),
+                    filename: filename.unwrap_or_else(|| "(unknown)".to_owned()),
                     ..ParserOptions::default()
                 }
             )
@@ -118,19 +118,13 @@ unsafe impl<'a, 'o> TypedData for Stylesheet<'a, 'o> {
 impl<'a, 'o> DataTypeFunctions for Stylesheet<'a, 'o> { }
 
 fn scan_parse_args(args: &[Value]) -> Result<(String, Option<String>), Error> {
-    let args = scan_args(args)?;
-    let (code,): (String,) = args.required;
-    let _: () = args.optional;
-    let _: () = args.splat;
-    let _: () = args.trailing;
-    let _: () = args.block;
+    scan_args(args).and_then(|args: Args<(String,), (), (), (), _, ()>| {
+        let (code,): (String,) = args.required;
 
-    let kwargs = get_kwargs(args.keywords, &[], &["filename"])?;
-    let _: () = kwargs.required;
-    let (filename,): (Option<Option<String>>,) = kwargs.optional;
-    let _: () = kwargs.splat;
-
-    Ok((code, filename.flatten()))
+        get_kwargs(args.keywords, &[], &["filename"])
+            .map(|kwargs: KwArgs<(), (Option<Option<String>>,), ()>| kwargs.optional)
+            .map(|(filename,)| (code, filename.flatten()))
+    })
 }
 
 pub fn initialize() -> Result<(), Error> {
