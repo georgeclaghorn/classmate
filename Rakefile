@@ -62,7 +62,7 @@ end
 
 task :clippy do
   cd "ext/classmate"
-  sh "cargo", "clippy"
+  sh "cargo", "clippy", "--no-deps", "--", "-D", "warnings"
 end
 
 task console: :compile do
