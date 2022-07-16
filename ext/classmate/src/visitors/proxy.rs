@@ -64,6 +64,7 @@ visit! {
         parcel_css::rules::nesting::NestingRule<'_>,
         parcel_css::rules::viewport::ViewportRule<'_>,
         parcel_css::rules::layer::LayerBlockRule<'_>,
+        parcel_css::rules::container::ContainerRule<'_>,
         parcel_css::rules::keyframes::KeyframesRule<'_>,
         parcel_css::rules::keyframes::Keyframe<'_>,
         parcel_css::rules::font_face::FontFaceRule<'_>,

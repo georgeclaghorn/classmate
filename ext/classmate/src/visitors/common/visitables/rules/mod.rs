@@ -11,6 +11,7 @@ mod document;
 mod nesting;
 mod viewport;
 mod layer;
+mod container;
 
 use crate::visitors::common::prelude::*;
 
@@ -41,6 +42,7 @@ impl Visitable for Rule<'_> {
                 Rule::Nesting(rule)           => rule.accept(visitor),
                 Rule::Viewport(rule)          => rule.accept(visitor),
                 Rule::LayerBlock(rule)        => rule.accept(visitor),
+                Rule::Container(rule)         => rule.accept(visitor),
 
                 Rule::Namespace(_)            |
                 Rule::CustomMedia(_)          |

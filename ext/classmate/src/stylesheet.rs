@@ -23,13 +23,15 @@ impl<'a, 'o> Stylesheet<'a, 'o> {
         let (code, filename) = scan_parse_args(args)?;
 
         let maybe_provider = ParsedStylesheetProvider::try_new(
-            filename,
             code,
 
-            |input| StyleSheet::parse(
-                input.filename.as_deref().unwrap_or("(unknown)"),
-                input.code.as_str(),
-                ParserOptions::default()
+            |code| StyleSheet::parse(
+                &code,
+
+                ParserOptions {
+                    filename: filename.unwrap_or("(unknown)".to_owned()),
+                    ..ParserOptions::default()
+                }
             )
         );
 

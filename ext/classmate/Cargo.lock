@@ -595,9 +595,9 @@ dependencies = [
 
 [[package]]
 name = "parcel_css"
-version = "1.0.0-alpha.28"
+version = "1.0.0-alpha.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "adc3b965972d8fd8baf6876e9e27d507b0adc2cbe323097a6008ebc16af4ed71"
+checksum = "e0598e4c64b0b4e9ba69491852a455053750f6ed24f4b7bf55bcedea412460fa"
 dependencies = [
  "bitflags",
  "const-str",

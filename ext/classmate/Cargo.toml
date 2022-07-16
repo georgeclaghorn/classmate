@@ -10,7 +10,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 magnus = "0.3"
-parcel_css = "1.0.0-alpha.28"
+parcel_css = "1.0.0-alpha.29"
 owning_ref = "0.4"
 tap = "1.0"
 smallvec = "1.8"

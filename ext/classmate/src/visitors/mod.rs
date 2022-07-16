@@ -18,6 +18,7 @@ pub trait Visitor<E>:
     for<'r> Visit<parcel_css::rules::nesting::NestingRule<'r>, E> +
     for<'r> Visit<parcel_css::rules::viewport::ViewportRule<'r>, E> +
     for<'r> Visit<parcel_css::rules::layer::LayerBlockRule<'r>, E> +
+    for<'r> Visit<parcel_css::rules::container::ContainerRule<'r>, E> +
     for<'r> Visit<parcel_css::rules::keyframes::KeyframesRule<'r>, E> +
     for<'r> Visit<parcel_css::rules::keyframes::Keyframe<'r>, E> +
     for<'r> Visit<parcel_css::rules::font_face::FontFaceRule<'r>, E> +

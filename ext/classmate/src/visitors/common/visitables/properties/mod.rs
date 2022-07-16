@@ -345,7 +345,10 @@ impl Visitable for Property<'_> {
                 Property::WebKitMaskBoxImageWidth(_, _)       |
                 Property::WebKitMaskBoxImageOutset(_, _)      |
                 Property::WebKitMaskBoxImageRepeat(_, _)      |
-                Property::ZIndex(_)                           => Ok(()),
+                Property::ZIndex(_)                           |
+                Property::ContainerType(_)                    |
+                Property::ContainerName(_)                    |
+                Property::Container(_)                        => Ok(()),
             }
         })
     }

@@ -5,7 +5,7 @@ use magnus::{
     class::object,
     block::{block_given, yield_value}
 };
-use parcel_css::stylesheet::MinifyOptions;
+use parcel_css::stylesheet::{ParserOptions, MinifyOptions};
 use tap::Tap;
 use crate::{
     providers::style_attribute::{StyleAttributeProvider, ParsedStyleAttributeProvider},
@@ -22,7 +22,11 @@ impl<'a> StyleAttribute<'a> {
         let maybe_provider =
             ParsedStyleAttributeProvider::try_new(
                 code,
-                parcel_css::stylesheet::StyleAttribute::parse
+
+                |code| parcel_css::stylesheet::StyleAttribute::parse(
+                    &code,
+                    ParserOptions::default()
+                )
             );
 
         maybe_provider
